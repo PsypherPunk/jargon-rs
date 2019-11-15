@@ -1,5 +1,5 @@
 [package]
-name = "jargon-rs"
+name = "jargon"
 version = "0.0.0"
 authors = ["PsypherPunk <psypherpunk@gmail.com>"]
 edition = "2018"
