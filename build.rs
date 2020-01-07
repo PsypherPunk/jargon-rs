@@ -1,19 +1,33 @@
 use regex::Regex;
-use std::fs::File;
-use std::fs::OpenOptions;
+use std::fs;
 use std::io::prelude::*;
 
-fn main() -> std::io::Result<()> {
-    let mut file = File::open("jargon.txt")?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+/// Transform each block of text into a collection of lines.
+///
+/// The first line corresponds to the term, the remainder to the
+/// definition.
+fn parse_entries(entries: Vec<&str>) -> Vec<Vec<&str>> {
+    entries
+        .into_iter()
+        .map(|entry| {
+            entry
+                .lines()
+                .filter(|line| line.len() > 0 && !line.starts_with("Node:"))
+                .map(|line| line.trim())
+                .collect()
+        })
+        .collect()
+}
 
-    let split = Regex::new(r"\s+_{106}\s+").unwrap();
-    let mut jargon: Vec<&str> = split.split(contents.as_ref()).collect();
-
+/// Return the subsection of entries containing Jargon definitions.
+///
+/// The Jargon file contains a number of sections beyond the
+/// dictionary entries—strip out those extraneous sections.
+fn get_relevant_entries(entries: Vec<&str>) -> Vec<&str> {
     let mut start = 0;
     let mut end = 0;
-    for (i, entry) in jargon.iter().enumerate() {
+
+    for (i, entry) in entries.iter().enumerate() {
         if entry.contains("Node:The Jargon Lexicon") {
             start = i + 1;
         }
@@ -22,28 +36,25 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    jargon = jargon[start..end].to_vec();
-    jargon = jargon
+    entries[start..end]
+        .to_vec()
         .into_iter()
         .filter(|entry| !entry.contains("Node:=") && !entry.contains(r"\n="))
-        .collect();
-    let mut last = jargon[jargon.len() - 1].clone().to_owned();
-    let last_position = jargon.len() - 1;
-    last = last.replace("(Lexicon Entries End Here)", "");
-    jargon[last_position] = last.as_str();
+        .collect()
+}
 
-    let jargon = jargon
-        .into_iter()
-        .map(|entry| {
-            entry
-                .lines()
-                .filter(|line| line.len() > 0 && !line.starts_with("Node:"))
-                .map(|line| line.trim())
-                .collect::<Vec<&str>>()
-        })
-        .collect::<Vec<Vec<&str>>>();
+/// Read in the `jargon.txt` file.
+///
+/// Additionally, remove the closing note indicating the end of jargon entries.
+fn get_jargon() -> String {
+    let contents = fs::read_to_string("jargon.txt").expect("Error reading jargon.txt");
+    print!("{}", contents);
 
-    let mut lib_rs = OpenOptions::new()
+    contents.replace("(Lexicon Entries End Here)", "")
+}
+
+fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
+    let mut lib_rs = fs::OpenOptions::new()
         .write(true)
         .append(false)
         .open("src/lib.rs")
@@ -66,7 +77,15 @@ fn main() -> std::io::Result<()> {
         );
         writeln!(lib_rs, "{}", row)?;
     }
-    writeln!(lib_rs, "];")?;
 
-    Ok(())
+    writeln!(lib_rs, "];")
+}
+
+fn main() {
+    let contents = get_jargon();
+    let split = Regex::new(r"\s+_{106}\s+").unwrap();
+    let entries: Vec<&str> = get_relevant_entries(split.split(contents.as_ref()).collect());
+    let jargon = parse_entries(entries);
+
+    write_lib(jargon).expect("Unable to write lib.rs");
 }
