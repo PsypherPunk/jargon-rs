@@ -2,6 +2,8 @@ use regex::Regex;
 use std::fs;
 use std::io::prelude::*;
 
+use flate2::read::GzDecoder;
+
 /// Transform each block of text into a collection of lines.
 ///
 /// The first line corresponds to the term, the remainder to the
@@ -43,12 +45,14 @@ fn get_relevant_entries(entries: Vec<&str>) -> Vec<&str> {
         .collect()
 }
 
-/// Read in the `jargon.txt` file.
+/// Read in the `jargon.txt.gz` file.
 ///
 /// Additionally, remove the closing note indicating the end of jargon entries.
 fn get_jargon() -> String {
-    let contents = fs::read_to_string("jargon.txt").expect("Error reading jargon.txt");
-    print!("{}", contents);
+    let compressed = fs::read("jargon.txt.gz").expect("Error reading jargon.txt.gz");
+    let mut gz = GzDecoder::new(&compressed[..]);
+    let mut contents = String::new();
+    gz.read_to_string(&mut contents).unwrap();
 
     contents.replace("(Lexicon Entries End Here)", "")
 }
