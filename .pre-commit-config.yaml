@@ -3,3 +3,19 @@ repos:
     rev: v0.18.0
     hooks:
     - id: markdownlint
+-   repo: local
+    hooks:
+    - id: cargo-audit
+      name: cargo-audit
+      entry: cargo audit
+      pass_filenames: false
+      always_run: true
+      language: rust
+-   repo: local
+    hooks:
+    - id: cargo-fmt
+      name: cargo-fmt
+      entry: cargo fmt -- --check
+      pass_filenames: false
+      always_run: true
+      language: rust
