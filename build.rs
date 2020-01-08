@@ -71,9 +71,8 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
         let term = entry.get(0).unwrap();
         let definition = entry[1..].join(" ");
         let row = format!(
-            "    Jargon {{\n        term: r##\"{}\"##,\n        definition: r##\"{}\"##,\n    }},\n",
-            term,
-            definition,
+            "    Jargon {{\n        term: r##\"{}\"##,\n        definition: r##\"{}\"##,\n    }},",
+            term, definition,
         );
         writeln!(lib_rs, "{}", row)?;
     }
