@@ -14,7 +14,7 @@ fn parse_entries(entries: Vec<&str>) -> Vec<Vec<&str>> {
         .map(|entry| {
             entry
                 .lines()
-                .filter(|line| line.len() > 0 && !line.starts_with("Node:"))
+                .filter(|line| !line.is_empty() && !line.starts_with("Node:"))
                 .map(|line| line.trim())
                 .collect()
         })
@@ -65,8 +65,8 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
         .unwrap();
 
     write!(
-        lib_rs, "{}",
-        "pub struct Jargon {\n    pub term: &'static str,\n    pub definition: &'static str,\n}\n\n",
+        lib_rs,
+        "pub struct Jargon {{\n    pub term: &'static str,\n    pub definition: &'static str,\n}}\n\n",
     )?;
 
     let open = format!("pub const JARGON: [Jargon; {}] = [", jargon.len());

@@ -1,0 +1,23 @@
+name: Cargo
+on: [push]
+jobs:
+  clippy:
+    name: cargo-clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: rust-clippy-check
+        uses: actions-rs/clippy-check@v1.0.5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+  audit:
+    name: cargo-audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: rust-audit-check
+        uses: actions-rs/audit-check@v1.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
