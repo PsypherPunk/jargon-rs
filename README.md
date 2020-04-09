@@ -1,5 +1,7 @@
 # `jargon`
 
+![GitHub Actions](https://github.com/PsypherPunk/jargon-rs/workflows/Cargo/badge.svg)
+
 Spawned from a
 [bout of nostalgia and some free time](https://blog.psypherpunk.io/posts/jargon/).
 
