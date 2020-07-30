@@ -1,6 +1,7 @@
 # `jargon`
 
-![GitHub Actions](https://github.com/PsypherPunk/jargon-rs/workflows/Cargo/badge.svg)
+![audit-lint](https://github.com/PsypherPunk/jargon-rs/workflows/audit-lint/badge.svg)
+![release](https://github.com/PsypherPunk/jargon-rs/workflows/release/badge.svg)
 
 ## About
 
