@@ -49,3 +49,10 @@ jobs:
           asset_path: target/debian/jargon_${{ steps.get_version.outputs.VERSION }}_amd64.deb
           asset_name: jargon_${{ steps.get_version.outputs.VERSION }}_amd64.deb
 
+      - name: cargo-publish
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+        run: |
+          cargo login ${CRATES_TOKEN}
+          cargo publish --allow-dirty
+

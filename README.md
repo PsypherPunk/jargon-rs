@@ -2,6 +2,8 @@
 
 ![GitHub Actions](https://github.com/PsypherPunk/jargon-rs/workflows/Cargo/badge.svg)
 
+## About
+
 Spawned from a
 [bout of nostalgia and some free time](https://blog.psypherpunk.io/posts/jargon/).
 
@@ -16,17 +18,39 @@ lynx \
     ${INTERNET_ARCHIVE_URL} | gzip --best -c > jargon.txt.gz
 ```
 
+## Build
+
 Build using `cargo`:
 
 ```bash
 cargo build --release
 ```
 
-This will update `src/lib.rs` in-place.
-
-Personally, I've created a symbolic link to the resulting binary and
-added `jargon` to my `.bashrc` file:
+This will update `src/lib.rs` in-place. The resulting changes can be
+ignored with:
 
 ```bash
-ln -s $(pwd)/target/release/jargon ${HOME}/bin/jargon
+git update-index \
+    --assume-unchanged \
+    src/lib.rs
 ```
+
+## Running
+
+This can be run locally using `cargo`:
+
+```bash
+cargo run --release
+```
+
+Alternatively, having built it as above, the resulting binary located
+in `target/release/jargon` can be executed directly:
+
+```bash
+./target/release/jargon
+```
+
+## Releases
+
+[Releases](https://github.com/PsypherPunk/jargon-rs/releases) are
+available as `deb` packages.
