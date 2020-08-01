@@ -2,7 +2,7 @@
 name = "jargon"
 description = "Command line tool for displaying a random entry from the Jargon File."
 readme = "README.md"
-version = "0.2.4"
+version = "0.2.5"
 authors = ["PsypherPunk <psypherpunk@gmail.com>"]
 edition = "2018"
 build = "build.rs"
@@ -12,6 +12,15 @@ repository = "https://github.com/PsypherPunk/jargon-rs"
 [package.metadata.deb]
 extended-description = "Command line tool for displaying a random entry from the Jargon File."
 section = "misc"
+
+[package.metadata.rpm]
+package = "jargon"
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+jargon = { path = "/usr/bin/jargon" }
 
 [dependencies]
 colored = "1.9"
