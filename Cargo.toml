@@ -2,7 +2,7 @@
 name = "jargon"
 description = "Command line tool for displaying a random entry from the Jargon File."
 readme = "README.md"
-version = "0.2.5"
+version = "0.3.0"
 authors = ["PsypherPunk <psypherpunk@gmail.com>"]
 edition = "2018"
 build = "build.rs"
@@ -23,9 +23,10 @@ buildflags = ["--release"]
 jargon = { path = "/usr/bin/jargon" }
 
 [dependencies]
-colored = "1.9"
-rand = "0.7.2"
+argh = "0"
+colored = "2"
+rand = "0"
 
 [build-dependencies]
-regex = "1.3.1"
-flate2 = "1.0"
+regex = "1"
+flate2 = "1"
