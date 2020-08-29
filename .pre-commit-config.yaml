@@ -19,3 +19,11 @@ repos:
       pass_filenames: false
       always_run: true
       language: rust
+-   repo: local
+    hooks:
+    - id: cargo-lichking-check
+      name: cargo-lichking-check
+      entry: cargo lichking check
+      pass_filenames: false
+      always_run: true
+      language: rust

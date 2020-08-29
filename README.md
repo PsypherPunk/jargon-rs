@@ -14,7 +14,7 @@ The contents of `jargon.txt.gz` were originally derived from the
 ```bash
 lynx \
     --dump \
-    --width 120 \
+    --width 145 \
     --nonumbers \
     ${INTERNET_ARCHIVE_URL} | gzip --best -c > jargon.txt.gz
 ```
@@ -54,4 +54,4 @@ in `target/release/jargon` can be executed directly:
 ## Releases
 
 [Releases](https://github.com/PsypherPunk/jargon-rs/releases) are
-available as `deb` packages.
+available as `deb` and `rpm` packages.

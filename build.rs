@@ -86,7 +86,7 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
 
 fn main() {
     let contents = get_jargon();
-    let split = Regex::new(r"\s+_{106}\s+").unwrap();
+    let split = Regex::new(r"\s+_{131}\s+").unwrap();
     let entries: Vec<&str> = get_relevant_entries(split.split(contents.as_ref()).collect());
     let jargon = parse_entries(entries);
 
