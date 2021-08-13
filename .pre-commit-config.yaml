@@ -11,16 +11,20 @@ repos:
       pass_filenames: false
       always_run: true
       language: rust
--   repo: local
-    hooks:
     - id: cargo-fmt
       name: cargo-fmt
       entry: cargo fmt -- --check
       pass_filenames: false
       always_run: true
       language: rust
--   repo: local
-    hooks:
+    - id: cargo-clippy
+      name: cargo-clippy
+      entry: cargo clippy
+      pass_filenames: false
+      always_run: true
+      language: rust
+      args:
+        - --all-features
     - id: cargo-lichking-check
       name: cargo-lichking-check
       entry: cargo lichking check

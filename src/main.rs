@@ -3,7 +3,7 @@ use colored::Colorize;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
-const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[derive(FromArgs)]
 /// Show an entry from the Jargon File.
