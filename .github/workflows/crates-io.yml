@@ -1,0 +1,19 @@
+name: crates-io
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  publish-crate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: cargo-publish
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+        run: |
+          cargo login ${CRATES_TOKEN}
+          cargo publish --allow-dirty --no-verify
