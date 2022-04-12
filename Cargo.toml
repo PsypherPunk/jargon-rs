@@ -2,12 +2,19 @@
 name = "jargon"
 description = "Command line tool for displaying a random entry from the Jargon File."
 readme = "README.md"
-version = "0.3.1"
-authors = ["PsypherPunk <psypherpunk@gmail.com>"]
-edition = "2018"
+version = "0.3.2"
+authors = ["PsypherPunk <psypherpunk+github@gmail.com>"]
+edition = "2021"
 build = "build.rs"
 license = "MPL-2.0"
 repository = "https://github.com/PsypherPunk/jargon-rs"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+strip = true
 
 [package.metadata.deb]
 extended-description = "Command line tool for displaying a random entry from the Jargon File."

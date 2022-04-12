@@ -11,8 +11,6 @@ jobs:
       version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - id: get_version
         run: echo ::set-output name=version::${GITHUB_REF#refs/tags/}
       - uses: actions-rs/toolchain@v1
@@ -35,8 +33,6 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/download-artifact@v2
         with:
           name: target-bin
@@ -81,60 +77,25 @@ jobs:
 
   make_release:
     runs-on: ubuntu-latest
-    needs: [build_deb, build_rpm]
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    needs: [build, build_deb, build_rpm]
     steps:
-      - id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: true
-          prerelease: false
-
-  upload_deb:
-    runs-on: ubuntu-latest
-    needs: [build, make_release]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/download-artifact@v2
         with:
           name: target-deb
           path: ./
       - name: untar-deb
         run: tar xvf target-deb.tar
-      - uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.make_release.outputs.upload_url }}
-          asset_content_type: application/vnd.debian.binary-package
-          asset_path: target/debian/jargon_${{ needs.build.outputs.version }}_amd64.deb
-          asset_name: jargon_${{ needs.build.outputs.version }}_amd64.deb
-
-  upload_rpm:
-    runs-on: ubuntu-latest
-    needs: [build, make_release]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/download-artifact@v2
         with:
           name: target-rpm
           path: ./
       - name: untar-rpm
         run: tar xvf target-rpm.tar
-      - uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ needs.make_release.outputs.upload_url }}
-          asset_content_type: application/x-rpm
-          asset_path: target/release/rpmbuild/RPMS/x86_64/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
-          asset_name: jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
+          draft: true
+          prerelease: false
+          files: |
+            target/debian/rustscan_${{ needs.build.outputs.version }}_amd64.deb
+            target/release/rpmbuild/RPMS/x86_64/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm

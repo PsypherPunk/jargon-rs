@@ -39,8 +39,8 @@ fn get_relevant_entries(entries: Vec<&str>) -> Vec<&str> {
     }
 
     entries[start..end]
-        .to_vec()
-        .into_iter()
+        .iter()
+        .copied()
         .filter(|entry| !entry.contains("Node:=") && !entry.contains(r"\n="))
         .collect()
 }
