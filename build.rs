@@ -72,7 +72,7 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
     let open = format!("pub const JARGON: [Jargon; {}] = [", jargon.len());
     writeln!(lib_rs, "{}", open)?;
     for entry in jargon {
-        let term = entry.get(0).unwrap();
+        let term = entry.first().unwrap();
         let definition = entry[1..].join(" ");
         let row = format!(
             "    Jargon {{\n        term: r##\"{}\"##,\n        definition: r##\"{}\"##,\n    }},",
