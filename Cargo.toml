@@ -2,7 +2,7 @@
 name = "jargon"
 description = "Command line tool for displaying a random entry from the Jargon File."
 readme = "README.md"
-version = "0.3.3"
+version = "0.3.4"
 authors = ["PsypherPunk <psypherpunk+github@gmail.com>"]
 edition = "2021"
 build = "build.rs"
@@ -20,14 +20,9 @@ strip = true
 extended-description = "Command line tool for displaying a random entry from the Jargon File."
 section = "misc"
 
-[package.metadata.rpm]
-package = "jargon"
-
-[package.metadata.rpm.cargo]
-buildflags = ["--release"]
-
-[package.metadata.rpm.targets]
-jargon = { path = "/usr/bin/jargon" }
+[package.metadata.generate-rpm]
+summary = "Command line tool for displaying a random entry from the Jargon File."
+assets = [{ source = "target/release/jargon", dest = "/usr/bin/jargon" }]
 
 [dependencies]
 argh = "0"

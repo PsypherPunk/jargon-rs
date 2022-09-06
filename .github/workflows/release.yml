@@ -61,13 +61,13 @@ jobs:
           path: ./
       - name: untar-bin
         run: tar xvf target-bin.tar
-      - name: cargo-rpm
+      - name: cargo-generate-rpm
         run: |
-          sudo apt-get install -y rpm
-          cargo install cargo-rpm
-          cargo rpm build --output target/release/rpmbuild/RPMS/x86_64/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
+          cargo install cargo-generate-rpm
+          cargo build --release
+          cargo generate-rpm
       - name: tar-rpm
-        run: tar cvf target-rpm.tar target/release/rpmbuild/RPMS/x86_64/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
+        run: tar cvf target-rpm.tar target/generate-rpm/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
       - uses: actions/upload-artifact@v2
         with:
           name: target-rpm
@@ -96,4 +96,4 @@ jobs:
           prerelease: false
           files: |
             target/debian/jargon_${{ needs.build.outputs.version }}_amd64.deb
-            target/release/rpmbuild/RPMS/x86_64/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
+            target/generate-rpm/jargon-${{ needs.build.outputs.version }}-1.x86_64.rpm
