@@ -6,7 +6,7 @@
 ## About
 
 Spawned from a
-[bout of nostalgia and some free time](https://blog.psypherpunk.io/posts/jargon/).
+[bout of nostalgia and some free time](https://blog.psypherpunk.io/jargon/).
 
 The contents of `jargon.txt.gz` were originally derived from the
 [Internet Archive](https://web.archive.org/web/20130827121341/http://cosman246.com/jargon.html):
