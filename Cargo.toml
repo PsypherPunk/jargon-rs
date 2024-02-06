@@ -2,7 +2,7 @@
 name = "jargon"
 description = "Command line tool for displaying a random entry from the Jargon File."
 readme = "README.md"
-version = "0.3.4"
+version = "0.3.5"
 authors = ["PsypherPunk <psypherpunk+github@gmail.com>"]
 edition = "2021"
 build = "build.rs"
