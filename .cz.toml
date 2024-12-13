@@ -1,0 +1,11 @@
+[tool.commitizen]
+version = "0.3.6"
+version_files = [
+    "Cargo.toml:^version",
+]
+version_scheme = "semver"
+bump_message = "bump: version $current_version → $new_version"
+
+[tool.commitizen.customize]
+bump_pattern = '^(BREAKING CHANGE|build|chore|docs|feat|fix|refactor|test)(\(.+\))?(!)?'
+bump_map = {"!" = "MAJOR", build = "PATCH", chore = "PATCH", docs = "PATCH", feat = "MINOR", fix = "PATCH", refactor = "PATCH", test = "PATCH" }
