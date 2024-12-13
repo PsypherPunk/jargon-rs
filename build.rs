@@ -15,7 +15,7 @@ fn parse_entries(entries: Vec<&str>) -> Vec<Vec<&str>> {
             entry
                 .lines()
                 .filter(|line| !line.is_empty() && !line.starts_with("Node:"))
-                .map(|line| line.trim())
+                .map(str::trim)
                 .collect()
         })
         .collect()
@@ -25,7 +25,7 @@ fn parse_entries(entries: Vec<&str>) -> Vec<Vec<&str>> {
 ///
 /// The Jargon file contains a number of sections beyond the
 /// dictionary entries—strip out those extraneous sections.
-fn get_relevant_entries(entries: Vec<&str>) -> Vec<&str> {
+fn get_relevant_entries<'a>(entries: &'a [&'a str]) -> Vec<&'a str> {
     let mut start = 0;
     let mut end = 0;
 
@@ -69,16 +69,18 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
         "pub struct Jargon {{\n    pub term: &'static str,\n    pub definition: &'static str,\n}}\n\n",
     )?;
 
-    let open = format!("pub const JARGON: [Jargon; {}] = [", jargon.len());
-    writeln!(lib_rs, "{}", open)?;
+    let open = format!(
+        "#[allow(clippy::needless_raw_string_hashes)]\npub const JARGON: [Jargon; {}] = [",
+        jargon.len()
+    );
+    writeln!(lib_rs, "{open}")?;
     for entry in jargon {
         let term = entry.first().unwrap();
         let definition = entry[1..].join(" ");
         let row = format!(
-            "    Jargon {{\n        term: r##\"{}\"##,\n        definition: r##\"{}\"##,\n    }},",
-            term, definition,
+            "    Jargon {{\n        term: r##\"{term}\"##,\n        definition: r##\"{definition}\"##,\n    }},",
         );
-        writeln!(lib_rs, "{}", row)?;
+        writeln!(lib_rs, "{row}")?;
     }
 
     writeln!(lib_rs, "];")
@@ -87,7 +89,8 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
 fn main() {
     let contents = get_jargon();
     let split = Regex::new(r"\s+_{131}\s+").unwrap();
-    let entries: Vec<&str> = get_relevant_entries(split.split(contents.as_ref()).collect());
+    let splits = split.split(contents.as_ref()).collect::<Vec<&str>>();
+    let entries: Vec<&str> = get_relevant_entries(&splits);
     let jargon = parse_entries(entries);
 
     write_lib(jargon).expect("Unable to write lib.rs");
