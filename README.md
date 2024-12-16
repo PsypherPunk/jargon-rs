@@ -1,5 +1,6 @@
 # `jargon`
 
+[![dependency status](https://deps.rs/crate/jargon/latest/status.svg)](https://deps.rs/crate/jargon)
 ![audit-lint](https://github.com/PsypherPunk/jargon-rs/workflows/audit-lint/badge.svg)
 ![release](https://github.com/PsypherPunk/jargon-rs/workflows/release/badge.svg)
 
