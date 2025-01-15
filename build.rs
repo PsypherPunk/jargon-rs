@@ -70,7 +70,7 @@ fn write_lib(jargon: Vec<Vec<&str>>) -> std::io::Result<()> {
     )?;
 
     let open = format!(
-        "#[allow(clippy::needless_raw_string_hashes)]\npub const JARGON: [Jargon; {}] = [",
+        "#[allow(clippy::needless_raw_string_hashes, clippy::large_const_arrays)]\npub const JARGON: [Jargon; {}] = [",
         jargon.len()
     );
     writeln!(lib_rs, "{open}")?;
