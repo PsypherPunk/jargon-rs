@@ -26,7 +26,7 @@ assets = [{ source = "target/release/jargon", dest = "/usr/bin/jargon" }]
 
 [dependencies]
 argh = "0"
-colored = "2"
+colored = "3"
 rand = "0"
 
 [build-dependencies]
