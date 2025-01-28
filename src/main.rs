@@ -1,7 +1,7 @@
 use argh::FromArgs;
 use colored::Colorize;
-use rand::seq::SliceRandom;
-use rand::thread_rng;
+use rand::rng;
+use rand::seq::IndexedRandom;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -18,7 +18,7 @@ fn main() {
     if args.version {
         println!("{VERSION}");
     } else {
-        let choice: &jargon::Jargon = jargon::JARGON.choose(&mut thread_rng()).unwrap();
+        let choice: &jargon::Jargon = jargon::JARGON.choose(&mut rng()).unwrap();
         println!("{}\n\n{}", choice.term.bold(), choice.definition.italic());
     }
 }
