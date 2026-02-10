@@ -14,6 +14,7 @@ jobs:
       - id: get_version
         run: echo ::set-output name=version::${GITHUB_REF#refs/tags/}
       - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - name: cargo-build
         run: |
           cargo build --release
@@ -35,6 +36,8 @@ jobs:
           path: ./
       - name: untar-bin
         run: tar xvf target-bin.tar
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - name: cargo-deb
         run: |
           cargo install cargo-deb
@@ -57,6 +60,8 @@ jobs:
           path: ./
       - name: untar-bin
         run: tar xvf target-bin.tar
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - name: cargo-generate-rpm
         run: |
           cargo install cargo-generate-rpm
