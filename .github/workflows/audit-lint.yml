@@ -13,35 +13,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: rust-audit-check
-        uses: actions-rs/audit-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: cargo-audit
+        run: |
+          cargo install cargo-audit --locked
+          cargo audit
 
   lint:
     name: linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions-rs/toolchain@v1.0.7
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          override: true
+          components: 'clippy,rustfmt'
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
+      - uses: Swatinem/rust-cache@v2
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+      - name: cargo-build
+        run: |
+          cargo build
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --all-features -- -Dwarnings
+      - name: cargo-fmt
+        run: |
+          cargo fmt --all --check
+
+      - name: cargo-clippy
+        run: |
+          cargo clippy --all-features -- -Dwarnings
 
